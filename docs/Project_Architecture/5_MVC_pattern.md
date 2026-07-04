@@ -64,4 +64,4 @@ Example routes:
 - Maintainability → Easier debugging and updates
 - Testability → Each layer can be tested independently
 - Collaboration-Friendly → Developers can work on different layers simultaneously
-![alt text](image-1.png)
+![alt text](image-3.png)

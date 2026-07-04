@@ -19,5 +19,5 @@ The Entity Relationship (ER) Diagram represents the database structure of the Sh
 - One Category can contain multiple Products.
 - One Order can include multiple Products.
 - Each Order is associated with one Payment.
-![alt text](image.png)
+![alt text](image_1.png)
 ![alt text](image-2.png)
