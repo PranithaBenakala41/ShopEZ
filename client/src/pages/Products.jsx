@@ -29,12 +29,23 @@ function Products({
     const params = new URLSearchParams(location.search);
     const selectedCategory = params.get("category");
 
-    if (selectedCategory) {
-      setCategory(selectedCategory);
-    } else {
-      setCategory("All");
-    }
+    if (selectedCategory) setCategory(selectedCategory);
+    else setCategory("All");
   }, [location.search, setCategory]);
+
+  const shareProduct = (product) => {
+    const shareData = {
+      title: product.name,
+      text: `🔥 Check this product: ${product.name} for ₹${product.price}`,
+      url: window.location.origin + `/product/${product._id}`,
+    };
+
+    if (navigator.share) navigator.share(shareData);
+    else {
+      navigator.clipboard.writeText(shareData.url);
+      alert("Link copied!");
+    }
+  };
 
   if (error) return <p>{error}</p>;
   if (!products.length) return <p>Loading products...</p>;
@@ -58,20 +69,6 @@ function Products({
   else if (sort === "name")
     sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
 
-  const shareProduct = (product) => {
-    const shareData = {
-      title: product.name,
-      text: `🔥 Check this product: ${product.name} for just ₹${product.price}`,
-      url: `https://shopez-53o5.onrender.com/product/${product._id}`,
-    };
-
-    if (navigator.share) navigator.share(shareData);
-    else {
-      navigator.clipboard.writeText(shareData.url);
-      alert("Link copied!");
-    }
-  };
-
   return (
     <>
       {/* FILTER BAR */}
@@ -89,7 +86,7 @@ function Products({
           gap: "10px",
         }}
       >
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+        <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
           <div>
             <label style={{ fontWeight: "600" }}>Category: </label>
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
@@ -117,7 +114,7 @@ function Products({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
           gap: "12px",
           padding: "12px",
         }}
@@ -132,58 +129,95 @@ function Products({
                 background: "#fff",
                 borderRadius: "12px",
                 boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-                display: "flex",
-                flexDirection: "column",
+                overflow: "hidden",
               }}
             >
-              <Link to={`/product/${p._id}`} style={{ textDecoration: "none", color: "black" }}>
-                <img
-                  src={p.image}
-                  alt={p.name}
+              {/* IMAGE + ICONS */}
+              <div style={{ position: "relative" }}>
+                <Link to={`/product/${p._id}`}>
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    style={{
+                      width: "100%",
+                      height: "150px",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Link>
+
+                {/* ICONS TOP RIGHT */}
+                <div
                   style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
+                    position: "absolute",
+                    top: "8px",
+                    right: "8px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
                   }}
-                />
+                >
+                  {/* Wishlist */}
+                  <button
+                    onClick={() => toggleWishlist(p)}
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      border: "none",
+                      background: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {wishlist.some((i) => i._id === p._id) ? (
+                      <FaHeart color="red" />
+                    ) : (
+                      <FaRegHeart />
+                    )}
+                  </button>
 
-                <div style={{ padding: "10px" }}>
-                  <h4 style={{ fontSize: "14px" }}>{p.name}</h4>
-                  <p style={{ color: "#2874f0" }}>₹{p.price}</p>
+                  {/* Share */}
+                  <button
+                    onClick={() => shareProduct(p)}
+                    style={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      border: "none",
+                      background: "white",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <HiOutlineShare />
+                  </button>
                 </div>
-              </Link>
+              </div>
 
-              <div style={{ display: "flex", padding: "10px", gap: "8px" }}>
+              {/* DETAILS */}
+              <div style={{ padding: "10px" }}>
+                <h4 style={{ fontSize: "14px" }}>{p.name}</h4>
+                <p style={{ color: "#2874f0" }}>₹{p.price}</p>
+
                 <button
                   onClick={() => addToCart(p)}
                   style={{
-                    flex: 1,
+                    width: "100%",
                     background: "#2874f0",
                     color: "white",
                     border: "none",
                     padding: "8px",
                     borderRadius: "6px",
+                    marginTop: "5px",
                   }}
                 >
-                  Add
+                  Add to Cart
                 </button>
-
-                <button
-                  onClick={() => toggleWishlist(p)}
-                  style={{
-                    width: "40px",
-                    border: "1px solid #ddd",
-                    background: "#fff",
-                  }}
-                >
-                  {wishlist.some((i) => i._id === p._id) ? (
-                    <FaHeart color="red" />
-                  ) : (
-                    <FaRegHeart />
-                  )}
-                </button>
-
-                <HiOutlineShare onClick={() => shareProduct(p)} />
               </div>
             </div>
           ))
