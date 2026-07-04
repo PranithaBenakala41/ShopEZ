@@ -48,20 +48,42 @@ function Wishlist({ wishlist, toggleWishlist, addToCart }) {
 
             <p>₹{item.price}</p>
 
-            <button
-  onClick={() => addToCart(item)}
-  style={{
-    background: "#2874f0",
-    color: "white",
-    border: "none",
-    padding: "10px 20px",
-    borderRadius: "6px",
-    cursor: "pointer",
-    marginBottom: "10px",
-  }}
->
-  Add to Cart
-</button><br/>
+            <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+
+  {/* ADD TO CART */}
+  <button
+    onClick={() => addToCart(item)}
+    style={{
+      background: "#2874f0",
+      color: "white",
+      border: "none",
+      padding: "10px 20px",
+      borderRadius: "6px",
+      cursor: "pointer",
+    }}
+  >
+    Add to Cart
+  </button>
+
+  {/* HEART ICON */}
+  <button
+    onClick={() => toggleWishlist(item)}
+    style={{
+      width: "40px",
+      height: "40px",
+      borderRadius: "50%",
+      border: "1px solid #ddd",
+      background: "white",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      cursor: "pointer",
+    }}
+  >
+    ❤️
+  </button>
+
+</div>
 
 <button
   onClick={() => toggleWishlist(item)}
