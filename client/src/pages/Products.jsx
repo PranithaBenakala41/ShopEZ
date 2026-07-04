@@ -1,0 +1,283 @@
+import { useEffect, useState } from "react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { HiOutlineShare } from "react-icons/hi";
+import axios from "axios";
+import { Link,useLocation} from "react-router-dom";
+
+function Products({
+  addToCart,
+  toggleWishlist,
+  wishlist,
+  search,
+  category,
+  setCategory,
+  sort,
+  setSort,
+})
+ {
+  const location = useLocation();
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/products")
+      .then((res) => setProducts(res.data))
+      .catch(() => setError("Failed to load products"));
+  }, []);
+  useEffect(() => {
+  const params = new URLSearchParams(location.search);
+  const selectedCategory = params.get("category");
+
+  if (selectedCategory) {
+    setCategory(selectedCategory);
+  } else {
+    setCategory("All");
+  }
+}, [location.search]);
+
+  if (error) return <p>{error}</p>;
+  if (!products.length) return <p>Loading products...</p>;
+
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchesCategory =
+      category === "All" ||
+      product.category.toLowerCase() === category.toLowerCase();
+
+    return matchesSearch && matchesCategory;
+  });
+
+  const sortedProducts = [...filteredProducts];
+
+  if (sort === "low") {
+    sortedProducts.sort((a, b) => a.price - b.price);
+  } else if (sort === "high") {
+    sortedProducts.sort((a, b) => b.price - a.price);
+  } else if (sort === "name") {
+    sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  const shareProduct = (product) => {
+    const shareData = {
+      title: product.name,
+      text: `🔥 Check this product: ${product.name} for just ₹${product.price}`,
+      url: `http://localhost:3000/product/${product._id}`,
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData);
+    } else {
+      navigator.clipboard.writeText(shareData.url);
+      alert("Link copied to clipboard!");
+    }
+  };
+
+  return (
+    <>
+      {/* FILTER BAR */}
+      <div
+        style={{
+  
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: "8px 15px",   // ↓ reduced
+    margin: "8px 15px",    // ↓ reduced
+    background: "#fff",
+    borderRadius: "8px",   // slightly tighter
+    boxShadow: "0 2px 6px rgba(0,0,0,0.06)", // lighter shadow
+    flexWrap: "wrap",
+    gap: "10px",           // smaller gap
+    fontSize: "14px",      // optional: makes it compact
+  }}
+>
+         
+      
+        {/* CATEGORY */}
+        <div>
+          <label style={{ fontWeight: "600", marginRight: "10px" }}>
+            Category:
+          </label>
+
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            style={{
+              padding: "8px 12px",
+              borderRadius: "6px",
+              border: "1px solid #ddd",
+            }}
+          >
+            <option value="All">All</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Fashion">Fashion</option>
+            <option value="Beauty">Beauty</option>
+            <option value="Footwear">Footwear</option>
+            
+            
+          </select>
+        </div>
+
+        {/* SORT */}
+        <div>
+          <label style={{ fontWeight: "600", marginRight: "10px" }}>
+            Sort By:
+          </label>
+
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            style={{
+              padding: "8px 12px",
+              borderRadius: "6px",
+              border: "1px solid #ddd",
+            }}
+          >
+            <option value="">Default</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+            <option value="name">Name (A-Z)</option>
+          </select>
+        </div>
+      </div>
+
+      {/* GRID */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
+          gap: "16px",
+          padding: "16px",
+        }}
+      >
+        {sortedProducts.length === 0 ? (
+          <h2 style={{ textAlign: "center", marginTop: "30px" }}>
+            No products found 😔
+          </h2>
+        ) : (
+          sortedProducts.map((p) => (
+            <div
+              key={p._id}
+              style={{
+                background: "#fff",
+                borderRadius: "12px",
+                overflow: "hidden",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "320px",
+                transition: "0.3s",
+              }}
+            >
+              <Link
+                to={`/product/${p._id}`}
+                style={{
+                  textDecoration: "none",
+                  color: "black",
+                  flex: 1,
+                }}
+              >
+                <div
+                  style={{
+                    width: "100%",
+                    height: "170px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                </div>
+
+                <div style={{ padding: "12px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <h3 style={{ fontSize: "15px", margin: 0 }}>
+                      {p.name}
+                    </h3>
+
+                    <HiOutlineShare
+                      onClick={() => shareProduct(p)}
+                      size={16}
+                      style={{ cursor: "pointer", color: "#6c5ce7" }}
+                    />
+                  </div>
+
+                  <p style={{ fontSize: "13px", color: "#666" }}>
+                    {p.category}
+                  </p>
+
+                  <p
+                    style={{
+                      color: "#2874f0",
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ₹{p.price}
+                  </p>
+                </div>
+              </Link>
+
+              {/* BUTTONS */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "8px",
+                  padding: "12px",
+                }}
+              >
+                <button
+                  onClick={() => addToCart(p)}
+                  style={{
+                    flex: 1,
+                    background: "#2874f0",
+                    color: "#fff",
+                    border: "none",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Add to Cart
+                </button>
+
+                <button
+                  onClick={() => toggleWishlist(p)}
+                  style={{
+                    width: "42px",
+                    border: "1px solid #ddd",
+                    background: "#fff",
+                    borderRadius: "8px",
+                  }}
+                >
+                  {wishlist.some((i) => i._id === p._id) ? (
+                    <FaHeart color="#ff3b5c" />
+                  ) : (
+                    <FaRegHeart color="#555" />
+                  )}
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </>
+  );
+}
+
+export default Products;
