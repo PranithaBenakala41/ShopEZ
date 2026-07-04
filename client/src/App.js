@@ -194,6 +194,7 @@ useEffect(() => {
             <ProductDetails
               addToCart={addToCart}
               toggleWishlist={toggleWishlist}
+              wishlist={wishlist}
             />
           }
         />
