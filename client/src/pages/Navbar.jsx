@@ -19,7 +19,7 @@ function Navbar({ cartCount, wishlistCount, search, setSearch }) {
           ShopEZ
         </Link>
 
-        {/* TOGGLER (mobile menu button) */}
+        {/* TOGGLER */}
         <button
           className="navbar-toggler"
           type="button"
@@ -44,35 +44,38 @@ function Navbar({ cartCount, wishlistCount, search, setSearch }) {
           </form>
 
           {/* NAV LINKS */}
-          <ul className="navbar-nav ms-auto align-items-lg-center text-center text-lg-start">
+          <ul className="navbar-nav ms-auto d-flex align-items-center text-center text-lg-start">
 
             <li className="nav-item">
-              <Link className="nav-link" to="/products">
+              <Link className="nav-link text-white" to="/products">
                 Products
               </Link>
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/admin">
+              <Link className="nav-link text-white" to="/admin">
                 Admin
               </Link>
             </li>
 
-            <li className="nav-item">
-              <Link className="nav-link" to="/orders">
-                📦 Orders
+            {/* ORDERS */}
+            <li className="nav-item d-flex align-items-center">
+              <Link className="nav-link d-flex align-items-center text-white" to="/orders">
+                <span className="me-1">📦</span> Orders
               </Link>
             </li>
 
-            <li className="nav-item">
-              <Link className="nav-link" to="/wishlist">
-                ❤️ {wishlistCount}
+            {/* WISHLIST */}
+            <li className="nav-item d-flex align-items-center">
+              <Link className="nav-link d-flex align-items-center text-white" to="/wishlist">
+                <span className="me-1">❤️</span> {wishlistCount}
               </Link>
             </li>
 
-            <li className="nav-item">
-              <Link className="nav-link" to="/cart">
-                🛒 {cartCount}
+            {/* CART */}
+            <li className="nav-item d-flex align-items-center">
+              <Link className="nav-link d-flex align-items-center text-white" to="/cart">
+                <span className="me-1">🛒</span> {cartCount}
               </Link>
             </li>
 
@@ -80,7 +83,7 @@ function Navbar({ cartCount, wishlistCount, search, setSearch }) {
             {user ? (
               <>
                 <li className="nav-item">
-                  <span className="nav-link">
+                  <span className="nav-link text-white">
                     👤 {user.name}
                   </span>
                 </li>
@@ -88,7 +91,7 @@ function Navbar({ cartCount, wishlistCount, search, setSearch }) {
                 <li className="nav-item">
                   <button
                     onClick={handleLogout}
-                    className="btn btn-light btn-sm mt-2 mt-lg-0 ms-lg-2"
+                    className="btn btn-light btn-sm ms-lg-2 mt-2 mt-lg-0"
                   >
                     Logout
                   </button>
@@ -97,13 +100,13 @@ function Navbar({ cartCount, wishlistCount, search, setSearch }) {
             ) : (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login">
+                  <Link className="nav-link text-white" to="/login">
                     Login
                   </Link>
                 </li>
 
                 <li className="nav-item">
-                  <Link className="nav-link" to="/register">
+                  <Link className="nav-link text-white" to="/register">
                     Register
                   </Link>
                 </li>
