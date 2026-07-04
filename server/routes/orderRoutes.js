@@ -134,4 +134,54 @@ router.get(
     }
   }
 );
+// =========================
+// ADMIN - GET ALL ORDERS
+// =========================
+router.get(
+  "/admin/orders",
+  authMiddleware,
+  adminMiddleware,
+  async (req, res) => {
+    try {
+      const orders = await Order.find().sort({ createdAt: -1 });
+      res.json(orders);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Failed to fetch orders" });
+    }
+  }
+);
+
+// =========================
+// ADMIN - UPDATE ORDER STATUS
+// =========================
+router.put(
+  "/admin/status/:id",
+  authMiddleware,
+  adminMiddleware,
+  async (req, res) => {
+    try {
+      const { status } = req.body;
+
+      const order = await Order.findById(req.params.id);
+
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+
+      order.status = status;
+
+      if (status === "Delivered") {
+        order.paymentStatus = "Paid";
+      }
+
+      await order.save();
+
+      res.json(order);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Failed to update order" });
+    }
+  }
+);
 module.exports = router;
