@@ -25,48 +25,64 @@ function ProductDetails({ addToCart, toggleWishlist, wishlist = [] }) {
   const isWishlisted = wishlist.some((item) => item._id === product._id);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <img
-        src={product.image}
-        alt={product.name}
-        style={{ width: "300px", objectFit: "cover" }}
-      />
+  <div style={{ padding: "20px", maxWidth: "600px" }}>
 
-      <h2>{product.name}</h2>
-      <p style={{ color: "#2874f0" }}>₹{product.price}</p>
-      <p>{product.description}</p>
+    <img
+      src={product.image}
+      alt={product.name}
+      style={{ width: "100%", maxHeight: "300px", objectFit: "contain" }}
+    />
 
-      {/* ACTION BUTTONS */}
-      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "15px" }}>
-        
-        <button
-          onClick={() => addToCart(product)}
-          style={{
-            padding: "10px 15px",
-            background: "#ff9f00",
-            border: "none",
-            color: "#fff",
-            cursor: "pointer",
-          }}
-        >
-          Add to Cart
-        </button>
+    <h2>{product.name}</h2>
+    <p style={{ color: "#2874f0" }}>₹{product.price}</p>
+    <p>{product.description}</p>
 
-        <button
-          onClick={() => toggleWishlist(product)}
-          style={{
-            fontSize: "22px",
-            border: "none",
-            background: "transparent",
-            cursor: "pointer",
-            color: isWishlisted ? "red" : "gray",
-          }}
-        >
-          ❤️
-        </button>
-      </div>
+    {/* ACTION AREA - ALWAYS VISIBLE */}
+    <div
+      style={{
+        position: "sticky",
+        bottom: "0",
+        background: "white",
+        padding: "15px",
+        display: "flex",
+        gap: "10px",
+        borderTop: "1px solid #ddd",
+      }}
+    >
+      <button
+        onClick={() => addToCart(product)}
+        style={{
+          flex: 1,
+          padding: "12px",
+          background: "#ff9f00",
+          border: "none",
+          color: "white",
+          fontWeight: "bold",
+          borderRadius: "5px",
+        }}
+      >
+        Add to Cart
+      </button>
+
+      <button
+        onClick={() => toggleWishlist(product)}
+        style={{
+          width: "50px",
+          fontSize: "22px",
+          border: "1px solid #ddd",
+          background: "white",
+          cursor: "pointer",
+          color: wishlist?.some((item) => item._id === product._id)
+            ? "red"
+            : "gray",
+          borderRadius: "5px",
+        }}
+      >
+        ❤️
+      </button>
     </div>
-  );
+  </div>
+);
 }
 
 export default ProductDetails;
