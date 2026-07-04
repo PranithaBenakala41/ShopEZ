@@ -28,9 +28,14 @@ function ProductDetails({ addToCart, toggleWishlist, wishlist = [] }) {
   );
 
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "auto" }}>
-
-      {/* IMAGE */}
+    <div
+      style={{
+        padding: "20px",
+        maxWidth: "600px",
+        margin: "auto",
+      }}
+    >
+      {/* Product Image */}
       <img
         src={product.image}
         alt={product.name}
@@ -41,63 +46,75 @@ function ProductDetails({ addToCart, toggleWishlist, wishlist = [] }) {
         }}
       />
 
-      {/* DETAILS */}
+      {/* Product Details */}
       <h2>{product.name}</h2>
-      <p style={{ color: "#2874f0", fontSize: "18px" }}>
+
+      <p
+        style={{
+          color: "#2874f0",
+          fontSize: "22px",
+          fontWeight: "bold",
+        }}
+      >
         ₹{product.price}
       </p>
+
       <p>{product.description}</p>
 
-      {/* ACTION BAR */}
+      {/* Bottom Action Bar */}
       <div
         style={{
           position: "sticky",
           bottom: "0",
-          background: "white",
+          background: "#fff",
           padding: "15px",
+          marginTop: "20px",
           display: "flex",
+          alignItems: "center",
           gap: "10px",
           borderTop: "1px solid #ddd",
         }}
       >
-        {/* ADD TO CART */}
+        {/* Add to Cart Button */}
         <button
           onClick={() => addToCart(product)}
           style={{
             flex: 1,
-            padding: "12px",
+            padding: "14px",
             background: "#ff9f00",
+            color: "#fff",
             border: "none",
-            color: "white",
+            borderRadius: "6px",
+            fontSize: "16px",
             fontWeight: "bold",
-            borderRadius: "5px",
             cursor: "pointer",
           }}
         >
           Add to Cart
         </button>
 
-        {/* WISHLIST ICON */}
-        <div
+        {/* Wishlist Heart Button */}
+        <button
           onClick={() => toggleWishlist(product)}
           style={{
-            width: "50px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            width: "52px",
+            height: "52px",
+            borderRadius: "50%",
             border: "1px solid #ddd",
-            background: "white",
+            background: "#fff",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
             cursor: "pointer",
-            borderRadius: "5px",
-            fontSize: "20px",
+            transition: "0.3s",
           }}
         >
           {isWishlisted ? (
-            <FaHeart color="red" />
+            <FaHeart size={24} color="red" />
           ) : (
-            <FaRegHeart color="gray" />
+            <FaRegHeart size={24} color="#666" />
           )}
-        </div>
+        </button>
       </div>
     </div>
   );
