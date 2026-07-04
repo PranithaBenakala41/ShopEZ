@@ -1,13 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 
-function Navbar({
-  cartCount,
-  wishlistCount,
-  search,
-  setSearch,
-}) {
+function Navbar({ cartCount, wishlistCount, search, setSearch }) {
   const navigate = useNavigate();
-
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
   const handleLogout = () => {
@@ -17,180 +11,107 @@ function Navbar({
   };
 
   return (
-    <nav
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "15px 30px",
-        background: "#2874f0",
-        color: "white",
-        gap: "25px",
-        position: "sticky",
-        top: 0,
-        zIndex: 1000,
-      }}
-    >
-      {/* Logo */}
-      <Link
-        to="/"
-        style={{
-          color: "white",
-          textDecoration: "none",
-          fontSize: "28px",
-          fontWeight: "bold",
-          whiteSpace: "nowrap",
-        }}
-      >
-        ShopEZ
-      </Link>
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary sticky-top shadow">
+      <div className="container-fluid">
 
-      {/* Search */}
-      <input
-        type="text"
-        placeholder="🔍 Search products..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{
-          flex: 1,
-          maxWidth: "450px",
-          padding: "10px 18px",
-          borderRadius: "25px",
-          border: "none",
-          outline: "none",
-          fontSize: "15px",
-        }}
-      />
-
-      {/* Navigation */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "18px",
-        }}
-      >
-        <Link
-          to="/products"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontWeight: "600",
-          }}
-        >
-          Products
+        {/* BRAND */}
+        <Link className="navbar-brand fw-bold fs-3" to="/">
+          ShopEZ
         </Link>
 
-        
-        <Link
-  to="/admin"
-  style={{
-    color: "white",
-    textDecoration: "none",
-    fontWeight: "600",
-  }}
->
-  Admin
-</Link>
-
-
-        <Link
-          to="/orders"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontWeight: "600",
-          }}
+        {/* TOGGLER (mobile menu button) */}
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
         >
-          📦 Orders
-        </Link>
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-        <Link
-          to="/wishlist"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontSize: "20px",
-            fontWeight: "600",
-          }}
-          title="Wishlist"
-        >
-          ❤️ {wishlistCount}
-        </Link>
+        {/* COLLAPSIBLE CONTENT */}
+        <div className="collapse navbar-collapse" id="navbarContent">
 
-        <Link
-          to="/cart"
-          style={{
-            color: "white",
-            textDecoration: "none",
-            fontSize: "20px",
-            fontWeight: "600",
-          }}
-          title="Cart"
-        >
-          🛒 {cartCount}
-        </Link>
-      </div>
+          {/* SEARCH BAR */}
+          <form className="d-flex w-100 w-lg-50 mx-lg-3 my-3 my-lg-0">
+            <input
+              className="form-control"
+              type="search"
+              placeholder="🔍 Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </form>
 
-      {/* User */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "12px",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {user ? (
-          <>
-            <span
-              style={{
-                fontWeight: "600",
-              }}
-            >
-              👤 {user.name}
-            </span>
+          {/* NAV LINKS */}
+          <ul className="navbar-nav ms-auto align-items-lg-center text-center text-lg-start">
 
-            <button
-              onClick={handleLogout}
-              style={{
-                background: "white",
-                color: "#2874f0",
-                border: "none",
-                padding: "8px 16px",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontWeight: "600",
-              }}
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link
-              to="/login"
-              style={{
-                color: "white",
-                textDecoration: "none",
-                fontWeight: "600",
-              }}
-            >
-              Login
-            </Link>
+            <li className="nav-item">
+              <Link className="nav-link" to="/products">
+                Products
+              </Link>
+            </li>
 
-            <Link
-              to="/register"
-              style={{
-                color: "white",
-                textDecoration: "none",
-                fontWeight: "600",
-              }}
-            >
-              Register
-            </Link>
-          </>
-        )}
+            <li className="nav-item">
+              <Link className="nav-link" to="/admin">
+                Admin
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/orders">
+                📦 Orders
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/wishlist">
+                ❤️ {wishlistCount}
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/cart">
+                🛒 {cartCount}
+              </Link>
+            </li>
+
+            {/* USER LOGIN STATE */}
+            {user ? (
+              <>
+                <li className="nav-item">
+                  <span className="nav-link">
+                    👤 {user.name}
+                  </span>
+                </li>
+
+                <li className="nav-item">
+                  <button
+                    onClick={handleLogout}
+                    className="btn btn-light btn-sm mt-2 mt-lg-0 ms-lg-2"
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/login">
+                    Login
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">
+                    Register
+                  </Link>
+                </li>
+              </>
+            )}
+
+          </ul>
+        </div>
       </div>
     </nav>
   );
