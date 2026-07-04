@@ -21,7 +21,7 @@ function Products({
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/products")
+      .get("https://shopez-53o5.onrender.com/api/products")
       .then((res) => setProducts(res.data))
       .catch(() => setError("Failed to load products"));
   }, []);
@@ -85,14 +85,14 @@ function Products({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: "8px 15px",   // ↓ reduced
-    margin: "8px 15px",    // ↓ reduced
+    padding: "8px 15px",   
+    margin: "8px 15px",    
     background: "#fff",
-    borderRadius: "8px",   // slightly tighter
-    boxShadow: "0 2px 6px rgba(0,0,0,0.06)", // lighter shadow
+    borderRadius: "8px",   
+    boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
     flexWrap: "wrap",
-    gap: "10px",           // smaller gap
-    fontSize: "14px",      // optional: makes it compact
+    gap: "10px",           
+    fontSize: "14px",      
   }}
 >
          

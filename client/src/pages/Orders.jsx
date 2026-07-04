@@ -24,7 +24,7 @@ function Orders({ addToCart }) {
       }
 
       const res = await axios.get(
-        "http://localhost:5000/api/orders",
+        "https://shopez-53o5.onrender.com/api/orders",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ function Orders({ addToCart }) {
     }
 
     const res = await axios.put(
-      `http://localhost:5000/api/orders/cancel/${id}`,
+      `https://shopez-53o5.onrender.com/api/orders/cancel/${id}`,
       {},
       {
         headers: {
@@ -272,7 +272,7 @@ const trackOrder = (status) => {
                 src={
                   item.image?.startsWith("http")
                     ? item.image
-                    : `http://localhost:5000/${item.image}`
+                    : `https://shopez-53o5.onrender.com/${item.image}`
                 }
                 alt={item.name}
                 style={{

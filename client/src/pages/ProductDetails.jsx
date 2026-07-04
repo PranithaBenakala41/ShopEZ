@@ -9,7 +9,7 @@ function ProductDetails({ addToCart }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/products/${id}`)
+      .get(`https://shopez-53o5.onrender.com/api/products/${id}`)
       .then((res) => {
         setProduct(res.data);
         setLoading(false);
@@ -55,7 +55,7 @@ function ProductDetails({ addToCart }) {
         boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
       }}
     >
-      {/* LEFT IMAGE */}
+      
       <div style={{ flex: "1", minWidth: "300px", textAlign: "center" }}>
         <img
           src={product.image}
@@ -69,9 +69,9 @@ function ProductDetails({ addToCart }) {
         />
       </div>
 
-      {/* RIGHT DETAILS */}
+      
       <div style={{ flex: "2", minWidth: "300px" }}>
-        {/* BACK */}
+        
         <Link
           to="/products"
           style={{
@@ -99,7 +99,7 @@ function ProductDetails({ addToCart }) {
           {product.description}
         </p>
 
-        {/* BUTTON */}
+        
         <button
           onClick={() => addToCart(product)}
           style={{

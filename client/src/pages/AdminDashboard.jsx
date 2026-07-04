@@ -21,7 +21,7 @@ function AdminDashboard() {
  const fetchStats = async () => {
   try {
     const res = await axios.get(
-      "http://localhost:5000/api/orders/admin/stats",
+      "https://shopez-53o5.onrender.com/api/orders/admin/stats",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

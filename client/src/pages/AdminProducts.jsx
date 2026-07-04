@@ -13,7 +13,7 @@ function AdminProducts() {
   async function getProducts() {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/products"
+        "https://shopez-53o5.onrender.com/api/products"
       );
 
       console.log("PRODUCTS:", response.data);
@@ -31,7 +31,7 @@ function AdminProducts() {
       if (!ok) return;
 
       await axios.delete(
-        `http://localhost:5000/api/products/${id}`
+        `https://shopez-53o5.onrender.com/api/products/${id}`
       );
 
       alert("Product deleted successfully");

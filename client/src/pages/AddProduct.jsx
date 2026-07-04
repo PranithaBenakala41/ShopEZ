@@ -25,7 +25,7 @@ function AddProduct() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/api/products", product);
+      await axios.post("http://shopez-53o5.onrender.com/api/products", product);
 
       alert("Product added successfully");
       navigate("/admin/products");
