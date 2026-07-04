@@ -8,27 +8,28 @@ body,
   overflow-x: hidden;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  color: #333;
-  line-height: 1.5;
-}
-
-
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
 
+/* IMAGES */
 img {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
+/* BUTTONS */
 button {
   cursor: pointer;
   transition: 0.2s ease;
@@ -38,12 +39,13 @@ button:hover {
   opacity: 0.9;
 }
 
+/* LINKS */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-
+/* INPUTS */
 input,
 textarea,
 select {
@@ -52,7 +54,7 @@ select {
   max-width: 100%;
 }
 
-
+/* CONTAINERS */
 .container,
 .container-fluid {
   max-width: 100%;
@@ -60,12 +62,7 @@ select {
   padding-right: 15px;
 }
 
-
-body {
-  overflow-x: hidden;
-}
-
-
+/* MOBILE */
 @media (max-width: 768px) {
   body {
     font-size: 14px;
@@ -80,7 +77,7 @@ body {
   }
 }
 
-
+/* TABLET */
 @media (max-width: 1024px) {
   body {
     font-size: 15px;

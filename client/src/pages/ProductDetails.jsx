@@ -14,102 +14,72 @@ function ProductDetails({ addToCart }) {
         setProduct(res.data);
         setLoading(false);
       })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }, [id]);
 
-  // LOADING STATE
-  if (loading) {
-    return (
-      <div style={{ padding: "20px", textAlign: "center" }}>
-        <h2>Loading product...</h2>
-      </div>
-    );
-  }
+  if (loading) return <h3 style={{ textAlign: "center" }}>Loading...</h3>;
 
-  // ERROR STATE
-  if (!product) {
+  if (!product)
     return (
-      <div style={{ padding: "20px", textAlign: "center" }}>
-        <h2>Product not found</h2>
-        <Link to="/" style={{ color: "#2874f0" }}>
-          Go Back
-        </Link>
+      <div style={{ textAlign: "center" }}>
+        <h3>Product not found</h3>
+        <Link to="/products">Go Back</Link>
       </div>
     );
-  }
 
   return (
     <div
       style={{
         maxWidth: "1000px",
-        margin: "30px auto",
-        padding: "20px",
+        margin: "20px auto",
+        padding: "15px",
         display: "flex",
         flexWrap: "wrap",
-        gap: "30px",
-        border: "1px solid #eee",
+        gap: "20px",
+        background: "#fff",
         borderRadius: "10px",
         boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
       }}
     >
-      
-      <div style={{ flex: "1", minWidth: "300px", textAlign: "center" }}>
+      {/* IMAGE */}
+      <div style={{ flex: 1, minWidth: "250px" }}>
         <img
           src={product.image}
           alt={product.name}
           style={{
             width: "100%",
-            maxHeight: "400px",
+            maxHeight: "350px",
             objectFit: "contain",
-            borderRadius: "10px",
           }}
         />
       </div>
 
-      
-      <div style={{ flex: "2", minWidth: "300px" }}>
-        
-        <Link
-          to="/products"
-          style={{
-            textDecoration: "none",
-            color: "#2874f0",
-            fontWeight: "bold",
-          }}
-        >
+      {/* DETAILS */}
+      <div style={{ flex: 2, minWidth: "250px" }}>
+        <Link to="/products" style={{ color: "#2874f0" }}>
           ← Back
         </Link>
 
-        {/* NAME */}
-        <h2 style={{ marginTop: "10px" }}>{product.name}</h2>
-
-        {/* PRICE */}
+        <h2>{product.name}</h2>
         <h2 style={{ color: "green" }}>₹{product.price}</h2>
 
-        {/* CATEGORY */}
         <p>
           <b>Category:</b> {product.category}
         </p>
 
-        {/* DESCRIPTION */}
-        <p style={{ color: "#555", lineHeight: "1.5" }}>
-          {product.description}
-        </p>
+        <p style={{ color: "#555" }}>{product.description}</p>
 
-        
         <button
           onClick={() => addToCart(product)}
           style={{
-            marginTop: "20px",
+            marginTop: "15px",
             background: "#2874f0",
-            color: "white",
+            color: "#fff",
             border: "none",
-            padding: "12px 20px",
+            padding: "12px",
             borderRadius: "6px",
-            cursor: "pointer",
+            width: "100%",
+            maxWidth: "250px",
           }}
         >
           Add to Cart

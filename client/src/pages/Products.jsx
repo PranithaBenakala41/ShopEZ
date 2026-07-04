@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { HiOutlineShare } from "react-icons/hi";
 import axios from "axios";
-import { Link,useLocation} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function Products({
   addToCart,
@@ -13,8 +13,7 @@ function Products({
   setCategory,
   sort,
   setSort,
-})
- {
+}) {
   const location = useLocation();
   const [products, setProducts] = useState([]);
   const [error, setError] = useState("");
@@ -25,16 +24,17 @@ function Products({
       .then((res) => setProducts(res.data))
       .catch(() => setError("Failed to load products"));
   }, []);
-  useEffect(() => {
-  const params = new URLSearchParams(location.search);
-  const selectedCategory = params.get("category");
 
-  if (selectedCategory) {
-    setCategory(selectedCategory);
-  } else {
-    setCategory("All");
-  }
-}, [location.search]);
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const selectedCategory = params.get("category");
+
+    if (selectedCategory) {
+      setCategory(selectedCategory);
+    } else {
+      setCategory("All");
+    }
+  }, [location.search, setCategory]);
 
   if (error) return <p>{error}</p>;
   if (!products.length) return <p>Loading products...</p>;
@@ -53,26 +53,22 @@ function Products({
 
   const sortedProducts = [...filteredProducts];
 
-  if (sort === "low") {
-    sortedProducts.sort((a, b) => a.price - b.price);
-  } else if (sort === "high") {
-    sortedProducts.sort((a, b) => b.price - a.price);
-  } else if (sort === "name") {
+  if (sort === "low") sortedProducts.sort((a, b) => a.price - b.price);
+  else if (sort === "high") sortedProducts.sort((a, b) => b.price - a.price);
+  else if (sort === "name")
     sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
-  }
 
   const shareProduct = (product) => {
     const shareData = {
       title: product.name,
       text: `🔥 Check this product: ${product.name} for just ₹${product.price}`,
-      url: `http://localhost:3000/product/${product._id}`,
+      url: `https://shopez-53o5.onrender.com/product/${product._id}`,
     };
 
-    if (navigator.share) {
-      navigator.share(shareData);
-    } else {
+    if (navigator.share) navigator.share(shareData);
+    else {
       navigator.clipboard.writeText(shareData.url);
-      alert("Link copied to clipboard!");
+      alert("Link copied!");
     }
   };
 
@@ -81,67 +77,39 @@ function Products({
       {/* FILTER BAR */}
       <div
         style={{
-  
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "8px 15px",   
-    margin: "8px 15px",    
-    background: "#fff",
-    borderRadius: "8px",   
-    boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
-    flexWrap: "wrap",
-    gap: "10px",           
-    fontSize: "14px",      
-  }}
->
-         
-      
-        {/* CATEGORY */}
-        <div>
-          <label style={{ fontWeight: "600", marginRight: "10px" }}>
-            Category:
-          </label>
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "10px",
+          margin: "10px",
+          background: "#fff",
+          borderRadius: "10px",
+          boxShadow: "0 2px 6px rgba(0,0,0,0.06)",
+          flexWrap: "wrap",
+          gap: "10px",
+        }}
+      >
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+          <div>
+            <label style={{ fontWeight: "600" }}>Category: </label>
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="All">All</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Fashion">Fashion</option>
+              <option value="Beauty">Beauty</option>
+              <option value="Footwear">Footwear</option>
+            </select>
+          </div>
 
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            style={{
-              padding: "8px 12px",
-              borderRadius: "6px",
-              border: "1px solid #ddd",
-            }}
-          >
-            <option value="All">All</option>
-            <option value="Electronics">Electronics</option>
-            <option value="Fashion">Fashion</option>
-            <option value="Beauty">Beauty</option>
-            <option value="Footwear">Footwear</option>
-            
-            
-          </select>
-        </div>
-
-        {/* SORT */}
-        <div>
-          <label style={{ fontWeight: "600", marginRight: "10px" }}>
-            Sort By:
-          </label>
-
-          <select
-            value={sort}
-            onChange={(e) => setSort(e.target.value)}
-            style={{
-              padding: "8px 12px",
-              borderRadius: "6px",
-              border: "1px solid #ddd",
-            }}
-          >
-            <option value="">Default</option>
-            <option value="low">Price: Low to High</option>
-            <option value="high">Price: High to Low</option>
-            <option value="name">Name (A-Z)</option>
-          </select>
+          <div>
+            <label style={{ fontWeight: "600" }}>Sort: </label>
+            <select value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="">Default</option>
+              <option value="low">Low → High</option>
+              <option value="high">High → Low</option>
+              <option value="name">A → Z</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -149,15 +117,13 @@ function Products({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-          gap: "16px",
-          padding: "16px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+          gap: "12px",
+          padding: "12px",
         }}
       >
         {sortedProducts.length === 0 ? (
-          <h2 style={{ textAlign: "center", marginTop: "30px" }}>
-            No products found 😔
-          </h2>
+          <h3 style={{ textAlign: "center" }}>No products found</h3>
         ) : (
           sortedProducts.map((p) => (
             <div
@@ -165,112 +131,59 @@ function Products({
               style={{
                 background: "#fff",
                 borderRadius: "12px",
-                overflow: "hidden",
                 boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
                 display: "flex",
                 flexDirection: "column",
-                minHeight: "320px",
-                transition: "0.3s",
               }}
             >
-              <Link
-                to={`/product/${p._id}`}
-                style={{
-                  textDecoration: "none",
-                  color: "black",
-                  flex: 1,
-                }}
-              >
-                <div
+              <Link to={`/product/${p._id}`} style={{ textDecoration: "none", color: "black" }}>
+                <img
+                  src={p.image}
+                  alt={p.name}
                   style={{
                     width: "100%",
-                    height: "170px",
-                    overflow: "hidden",
+                    height: "150px",
+                    objectFit: "cover",
                   }}
-                >
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </div>
+                />
 
-                <div style={{ padding: "12px" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <h3 style={{ fontSize: "15px", margin: 0 }}>
-                      {p.name}
-                    </h3>
-
-                    <HiOutlineShare
-                      onClick={() => shareProduct(p)}
-                      size={16}
-                      style={{ cursor: "pointer", color: "#6c5ce7" }}
-                    />
-                  </div>
-
-                  <p style={{ fontSize: "13px", color: "#666" }}>
-                    {p.category}
-                  </p>
-
-                  <p
-                    style={{
-                      color: "#2874f0",
-                      fontSize: "20px",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    ₹{p.price}
-                  </p>
+                <div style={{ padding: "10px" }}>
+                  <h4 style={{ fontSize: "14px" }}>{p.name}</h4>
+                  <p style={{ color: "#2874f0" }}>₹{p.price}</p>
                 </div>
               </Link>
 
-              {/* BUTTONS */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "8px",
-                  padding: "12px",
-                }}
-              >
+              <div style={{ display: "flex", padding: "10px", gap: "8px" }}>
                 <button
                   onClick={() => addToCart(p)}
                   style={{
                     flex: 1,
                     background: "#2874f0",
-                    color: "#fff",
+                    color: "white",
                     border: "none",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    cursor: "pointer",
+                    padding: "8px",
+                    borderRadius: "6px",
                   }}
                 >
-                  Add to Cart
+                  Add
                 </button>
 
                 <button
                   onClick={() => toggleWishlist(p)}
                   style={{
-                    width: "42px",
+                    width: "40px",
                     border: "1px solid #ddd",
                     background: "#fff",
-                    borderRadius: "8px",
                   }}
                 >
                   {wishlist.some((i) => i._id === p._id) ? (
-                    <FaHeart color="#ff3b5c" />
+                    <FaHeart color="red" />
                   ) : (
-                    <FaRegHeart color="#555" />
+                    <FaRegHeart />
                   )}
                 </button>
+
+                <HiOutlineShare onClick={() => shareProduct(p)} />
               </div>
             </div>
           ))

@@ -43,7 +43,7 @@ function Home() {
     }, 4000);
 
     return () => clearInterval(timer);
-  }, [slides.length]);
+  }, []);
 
   const nextSlide = () => {
     setCurrent((prev) => (prev + 1) % slides.length);
@@ -64,31 +64,29 @@ function Home() {
         backgroundImage: `url(${slides[current].image})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
         position: "relative",
         cursor: "pointer",
-        overflow: "hidden",
       }}
     >
-      {/* Overlay */}
+      {/* OVERLAY */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          background: "rgba(0,0,0,0.45)",
+          background: "rgba(0,0,0,0.5)",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "flex-start",
-          padding: "0 80px",
+          padding: "40px 20px",
           color: "white",
         }}
       >
         <h1
           style={{
-            fontSize: "56px",
+            fontSize: "clamp(24px, 5vw, 56px)",
             fontWeight: "700",
-            marginBottom: "20px",
+            marginBottom: "15px",
           }}
         >
           {slides[current].title}
@@ -96,8 +94,8 @@ function Home() {
 
         <p
           style={{
-            fontSize: "24px",
-            marginBottom: "40px",
+            fontSize: "clamp(14px, 3vw, 24px)",
+            marginBottom: "25px",
           }}
         >
           {slides[current].subtitle}
@@ -109,21 +107,20 @@ function Home() {
             navigate(`/products?category=${slides[current].category}`);
           }}
           style={{
-            padding: "14px 30px",
+            padding: "12px 24px",
             border: "none",
-            borderRadius: "30px",
+            borderRadius: "25px",
             background: "#2874f0",
             color: "#fff",
-            fontSize: "18px",
+            fontSize: "clamp(14px, 2vw, 18px)",
             fontWeight: "bold",
-            cursor: "pointer",
           }}
         >
           Shop Now →
         </button>
       </div>
 
-      {/* Left Arrow */}
+      {/* LEFT ARROW */}
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -132,22 +129,21 @@ function Home() {
         style={{
           position: "absolute",
           top: "50%",
-          left: "20px",
+          left: "10px",
           transform: "translateY(-50%)",
-          width: "55px",
-          height: "55px",
+          width: "40px",
+          height: "40px",
           borderRadius: "50%",
           border: "none",
-          background: "rgba(255,255,255,0.35)",
+          background: "rgba(255,255,255,0.4)",
           color: "#fff",
-          fontSize: "28px",
-          cursor: "pointer",
+          fontSize: "20px",
         }}
       >
         ❮
       </button>
 
-      {/* Right Arrow */}
+      {/* RIGHT ARROW */}
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -156,30 +152,29 @@ function Home() {
         style={{
           position: "absolute",
           top: "50%",
-          right: "20px",
+          right: "10px",
           transform: "translateY(-50%)",
-          width: "55px",
-          height: "55px",
+          width: "40px",
+          height: "40px",
           borderRadius: "50%",
           border: "none",
-          background: "rgba(255,255,255,0.35)",
+          background: "rgba(255,255,255,0.4)",
           color: "#fff",
-          fontSize: "28px",
-          cursor: "pointer",
+          fontSize: "20px",
         }}
       >
         ❯
       </button>
 
-      {/* Dots */}
+      {/* DOTS */}
       <div
         style={{
           position: "absolute",
-          bottom: "25px",
+          bottom: "15px",
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",
-          gap: "12px",
+          gap: "10px",
         }}
       >
         {slides.map((_, index) => (
@@ -190,12 +185,10 @@ function Home() {
               setCurrent(index);
             }}
             style={{
-              width: current === index ? "18px" : "12px",
-              height: current === index ? "18px" : "12px",
+              width: current === index ? "12px" : "8px",
+              height: current === index ? "12px" : "8px",
               borderRadius: "50%",
-              background: current === index ? "#fff" : "#bbb",
-              cursor: "pointer",
-              transition: "0.3s",
+              background: current === index ? "#fff" : "#aaa",
             }}
           />
         ))}

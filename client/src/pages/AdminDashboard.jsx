@@ -18,120 +18,180 @@ function AdminDashboard() {
     fetchStats();
   }, []);
 
- const fetchStats = async () => {
-  try {
-    const res = await axios.get(
-      "https://shopez-53o5.onrender.com/api/orders/admin/stats",
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
+  const fetchStats = async () => {
+    try {
+      const res = await axios.get(
+        "https://shopez-53o5.onrender.com/api/orders/admin/stats",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
-    setStats(res.data);
-  } catch (err) {
-    console.log("Error fetching stats:", err.response?.data || err.message);
-  } finally {
-    setLoading(false);
-  }
-};
+      setStats(res.data);
+    } catch (err) {
+      console.log("Error fetching stats:", err.response?.data || err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if (loading) return <h3 className="p-4">Loading dashboard...</h3>;
-  if (!stats) return <h3 className="p-4">No stats found</h3>;
+  if (loading)
+    return <h3 style={{ padding: "20px" }}>Loading dashboard...</h3>;
+
+  if (!stats)
+    return <h3 style={{ padding: "20px" }}>No stats found</h3>;
 
   return (
-    <div className="container py-4">
-
-      {/* Heading */}
-      <div className="mb-4">
-        <h2 className="fw-bold">Admin Dashboard</h2>
-        <p className="text-muted">
+    <div
+      style={{
+        maxWidth: "1200px",
+        margin: "0 auto",
+        padding: "15px",
+      }}
+    >
+      {/* HEADER */}
+      <div style={{ marginBottom: "20px" }}>
+        <h2 style={{ fontSize: "22px", marginBottom: "5px" }}>
+          Admin Dashboard
+        </h2>
+        <p style={{ color: "#666" }}>
           Manage your store, products, and orders.
         </p>
       </div>
 
-      {/* STATS CARDS */}
-      <div className="row g-4 mb-4">
-
-        <div className="col-md-3">
-          <div className="card p-3 shadow-sm text-center">
-            <FaBoxOpen size={25} />
-            <h5 className="mt-2">Products</h5>
-            <h3>{stats.totalProducts}</h3>
+      {/* STATS */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+          gap: "12px",
+          marginBottom: "20px",
+        }}
+      >
+        {[
+          { icon: <FaBoxOpen />, label: "Products", value: stats.totalProducts },
+          { icon: <FaClipboardList />, label: "Orders", value: stats.totalOrders },
+          { icon: <FaUsers />, label: "Users", value: stats.totalUsers },
+          {
+            icon: <FaRupeeSign />,
+            label: "Revenue",
+            value: `₹${stats.revenue}`,
+          },
+        ].map((item, i) => (
+          <div
+            key={i}
+            style={{
+              background: "#fff",
+              padding: "15px",
+              borderRadius: "10px",
+              textAlign: "center",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+            }}
+          >
+            <div style={{ fontSize: "20px" }}>{item.icon}</div>
+            <h5 style={{ margin: "8px 0" }}>{item.label}</h5>
+            <h3 style={{ margin: 0 }}>{item.value}</h3>
           </div>
-        </div>
-
-        <div className="col-md-3">
-          <div className="card p-3 shadow-sm text-center">
-            <FaClipboardList size={25} />
-            <h5 className="mt-2">Orders</h5>
-            <h3>{stats.totalOrders}</h3>
-          </div>
-        </div>
-
-        <div className="col-md-3">
-          <div className="card p-3 shadow-sm text-center">
-            <FaUsers size={25} />
-            <h5 className="mt-2">Users</h5>
-            <h3>{stats.totalUsers}</h3>
-          </div>
-        </div>
-
-        <div className="col-md-3">
-          <div className="card p-3 shadow-sm text-center">
-            <FaRupeeSign size={25} />
-            <h5 className="mt-2">Revenue</h5>
-            <h3>₹{stats.revenue}</h3>
-          </div>
-        </div>
-
+        ))}
       </div>
 
       {/* ACTION CARDS */}
-      <div className="row g-4">
-
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: "15px",
+        }}
+      >
         {/* Add Product */}
-        <div className="col-md-4">
-          <div className="card shadow-sm border-0 h-100 p-3 text-center">
-            <FaPlus size={30} className="mb-2 text-primary" />
-            <h4>Add Product</h4>
-            <p className="text-muted">Add new products to your store</p>
+        <div
+          style={{
+            background: "#fff",
+            padding: "15px",
+            borderRadius: "10px",
+            textAlign: "center",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+          }}
+        >
+          <FaPlus size={25} color="blue" />
+          <h4>Add Product</h4>
+          <p style={{ color: "#666" }}>Add new products to your store</p>
 
-            <Link to="/admin/add-product" className="btn btn-primary w-100">
-              Add Product
-            </Link>
-          </div>
+          <Link
+            to="/admin/add-product"
+            style={{
+              display: "block",
+              padding: "10px",
+              background: "#2874f0",
+              color: "#fff",
+              borderRadius: "6px",
+              marginTop: "10px",
+            }}
+          >
+            Add Product
+          </Link>
         </div>
 
-        {/* Manage Products */}
-        <div className="col-md-4">
-          <div className="card shadow-sm border-0 h-100 p-3 text-center">
-            <FaBoxOpen size={30} className="mb-2 text-success" />
-            <h4>Products</h4>
-            <p className="text-muted">Edit or delete products</p>
+        {/* Products */}
+        <div
+          style={{
+            background: "#fff",
+            padding: "15px",
+            borderRadius: "10px",
+            textAlign: "center",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+          }}
+        >
+          <FaBoxOpen size={25} color="green" />
+          <h4>Products</h4>
+          <p style={{ color: "#666" }}>Edit or delete products</p>
 
-            <Link to="/admin/products" className="btn btn-success w-100">
-              Manage Products
-            </Link>
-          </div>
+          <Link
+            to="/admin/products"
+            style={{
+              display: "block",
+              padding: "10px",
+              background: "green",
+              color: "#fff",
+              borderRadius: "6px",
+              marginTop: "10px",
+            }}
+          >
+            Manage Products
+          </Link>
         </div>
 
         {/* Orders */}
-        <div className="col-md-4">
-          <div className="card shadow-sm border-0 h-100 p-3 text-center">
-            <FaClipboardList size={30} className="mb-2 text-warning" />
-            <h4>Orders</h4>
-            <p className="text-muted">View and manage customer orders</p>
+        <div
+          style={{
+            background: "#fff",
+            padding: "15px",
+            borderRadius: "10px",
+            textAlign: "center",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+          }}
+        >
+          <FaClipboardList size={25} color="orange" />
+          <h4>Orders</h4>
+          <p style={{ color: "#666" }}>View and manage orders</p>
 
-            <Link to="/admin/orders" className="btn btn-warning w-100 text-white">
-              View Orders
-            </Link>
-          </div>
+          <Link
+            to="/admin/orders"
+            style={{
+              display: "block",
+              padding: "10px",
+              background: "orange",
+              color: "#fff",
+              borderRadius: "6px",
+              marginTop: "10px",
+            }}
+          >
+            View Orders
+          </Link>
         </div>
-
       </div>
-
     </div>
   );
 }
