@@ -110,103 +110,131 @@ function Products({
         </div>
       </div>
 
-      {/* GRID */}
+   
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+    gap: "12px",
+    padding: "12px",
+  }}
+>
+  {sortedProducts.length === 0 ? (
+    <h3 style={{ textAlign: "center" }}>No products found</h3>
+  ) : (
+    sortedProducts.map((p) => (
       <div
+        key={p._id}
         style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: "12px",
-          padding: "12px",
+          background: "#fff",
+          borderRadius: "12px",
+          boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
+          overflow: "hidden",
         }}
       >
-        {sortedProducts.length === 0 ? (
-          <h3 style={{ textAlign: "center" }}>No products found</h3>
-        ) : (
-          sortedProducts.map((p) => (
-            <div
-              key={p._id}
+        {/* IMAGE */}
+        <Link to={`/product/${p._id}`}>
+          <img
+            src={p.image}
+            alt={p.name}
+            style={{
+              width: "100%",
+              height: "150px",
+              objectFit: "cover",
+            }}
+          />
+        </Link>
+
+        {/* DETAILS */}
+        <div style={{ padding: "10px" }}>
+          {/* NAME + SHARE */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <h4 style={{ fontSize: "14px", margin: 0 }}>
+              {p.name}
+            </h4>
+
+            <button
+              onClick={() => shareProduct(p)}
               style={{
-                background: "#fff",
-                borderRadius: "12px",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.08)",
-                overflow: "hidden",
+                width: "30px",
+                height: "30px",
+                borderRadius: "50%",
+                border: "none",
+                background: "#f1f1f1",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                flexShrink: 0,
               }}
             >
-              {/* IMAGE */}
-              <Link to={`/product/${p._id}`}>
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  style={{
-                    width: "100%",
-                    height: "150px",
-                    objectFit: "cover",
-                  }}
-                />
-              </Link>
+              <HiOutlineShare />
+            </button>
+          </div>
 
-              {/* DETAILS */}
-              <div style={{ padding: "10px" }}>
-                
-                {/* NAME + SHARE ROW */}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <h4 style={{ fontSize: "14px", margin: 0 }}>
-                    {p.name}
-                  </h4>
+          {/* PRICE */}
+          <p style={{ color: "#2874f0", marginTop: "6px" }}>
+            ₹{p.price}
+          </p>
 
-                  {/* SHARE ICON */}
-                  <button
-                    onClick={() => shareProduct(p)}
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      borderRadius: "50%",
-                      border: "none",
-                      background: "#f1f1f1",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      flexShrink: 0,
-                    }}
-                  >
-                    <HiOutlineShare />
-                  </button>
-                </div>
+          {/* ADD TO CART + WISHLIST */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              marginTop: "5px",
+            }}
+          >
+            <button
+              onClick={() => addToCart(p)}
+              style={{
+                flex: 1,
+                background: "#2874f0",
+                color: "#fff",
+                border: "none",
+                padding: "8px",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Add to Cart
+            </button>
 
-                {/* PRICE */}
-                <p style={{ color: "#2874f0", marginTop: "6px" }}>
-                  ₹{p.price}
-                </p>
-
-                {/* CART BUTTON */}
-                <button
-                  onClick={() => addToCart(p)}
-                  style={{
-                    width: "100%",
-                    background: "#2874f0",
-                    color: "white",
-                    border: "none",
-                    padding: "8px",
-                    borderRadius: "6px",
-                    marginTop: "5px",
-                  }}
-                >
-                  Add to Cart
-                </button>
-              </div>
-            </div>
-          ))
-        )}
+            <button
+              onClick={() => toggleWishlist(p)}
+              style={{
+                width: "42px",
+                height: "42px",
+                borderRadius: "50%",
+                border: "1px solid #ddd",
+                background: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+              }}
+            >
+              {wishlist.some((item) => item._id === p._id) ? (
+                <FaHeart color="red" size={20} />
+              ) : (
+                <FaRegHeart color="gray" size={20} />
+              )}
+            </button>
+          </div>
+        </div>
       </div>
-    </>
+    ))
+  )}
+</div>
+</>
   );
 }
 
