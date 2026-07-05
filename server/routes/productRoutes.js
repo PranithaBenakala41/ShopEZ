@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-// UPDATE PRODUCT (THIS FIXES YOUR ERROR)
+// UPDATE PRODUCT 
 router.put("/:id", async (req, res) => {
   try {
     const updated = await Product.findByIdAndUpdate(
