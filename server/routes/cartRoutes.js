@@ -19,7 +19,7 @@ router.post("/add", authMiddleware, async (req, res) => {
   res.json({ message: "Added to cart", item });
 });
 
-// 👇 ADD THIS (GET CART)
+// (GET CART)
 router.get("/", authMiddleware, async (req, res) => {
   const items = await Cart.find({ userId: req.user.id });
   res.json(items);
