@@ -71,7 +71,7 @@ function Cart({cart,removeFromCart,increaseQuantity,decreaseQuantity,clearCart,}
                       background: "#fff",
                       cursor: "pointer",
                       fontSize: "18px",
-                    }}>
+                    }}>-
                    </button>
                    <span style={{
                       fontWeight: "bold",
